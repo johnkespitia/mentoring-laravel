@@ -9,12 +9,11 @@ services:
       - "./src/:/var/www/html/"
     ports:
       - "80:80"
-  #mysql-server:
-  #  image: mysql:8.0.19
-   #  restart: always
-    #environment:
-    #  MYSQL_ROOT_PASSWORD: secret
-    #ports:
-    #  - "3306:3306"
-    #volumes:
-    #  - ./docker/MYSQLDATA:/var/lib/mysql
+  mysql-server:
+    image: mysql:8.0.19
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/MYSQLDATA:/var/lib/mysql
