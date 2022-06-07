@@ -15,7 +15,34 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        $limit = request()->get("limit");
+        $name = request()->get("name");
+        $pricegt = request()->get("pricegt");
+        $category = request()->get("category");
+        $result = Products::limit($limit)
+            //->wherePrice($pricegt)
+            ->where(function($query) use($name) {
+                $query->where("products.name",'like',"%{$name}%");
+                $query->orWhere("products.description",'like',"%{$name}%");
+            })
+            ->where("categories.name","like","%{$category}%")
+            ->join('categories', 'products.category_id', "=", 'categories.id')
+            //->select("categories.name as category", 'products.*')
+            //where a=1 and (b=2 or c= 2)
+            //where (a=1 and b=2) or (a=1 and c=2)
+            // ->where([
+            //     ["name",'like',"%{$name}%"],
+            //     ['price', ">=",$pricegt],
+            // ])
+            // ->orWhere([
+            //     ["description",'like',"%{$name}%"],
+            //     ['price', ">=",$pricegt]
+            // ])
+            ->with("category")
+            ->get();
+        //return $result; 
+        return response()->json($result, 200);
+            
     }
 
     /**
@@ -45,9 +72,9 @@ class ProductsController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function show(Products $products)
+    public function show(Products $product)
     {
-        //
+        return response()->json($product, 200);
     }
 
     /**

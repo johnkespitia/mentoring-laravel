@@ -16,9 +16,13 @@ class CategoriesController extends Controller
     public function index()
     {
         //$categories = Categories::with('activeProducts')->get();
-        $categories = Categories::with(["products"=>function($query){
-            $query->where("name", 'like', '%ama%');
-        }])->get();
+        // $categories = Categories::with(["products"=>function($query){
+        //     $query->where("name", 'like', '%ama%');
+        // }])->get();
+        // $categories = Categories::whereHas("products",function($query){
+        //     $query->where('state', '=', true);
+        // })->get();
+        $categories = Categories::count();
         echo json_encode($categories);
         die;
     }
@@ -42,7 +46,9 @@ class CategoriesController extends Controller
      */
     public function show(Categories $categories)
     {
-        //
+        $desc = $categories->products->count();
+        echo json_encode([$categories, $categories->products->sum('price')]);
+        die;
     }
 
     /**
