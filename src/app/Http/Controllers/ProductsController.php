@@ -39,7 +39,7 @@ class ProductsController extends Controller
             //     ['price', ">=",$pricegt]
             // ])
             ->with("category")
-            ->get();
+            ->get()->sum->price;
         //return $result; 
         return response()->json($result, 200);
             
