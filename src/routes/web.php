@@ -19,3 +19,7 @@ Route::get('/', function () {
 Route::get('/hola', function () {
     return view('welcome1');
 });
+
+Route::middleware(['logRequests', 'auth'])->get('logged', function() {
+    die("logged...");
+});
